@@ -25,10 +25,12 @@ typedef struct s_command
 
 typedef struct s_data
 {
-    t_command   cmd;
+    t_list      *cmds;
     int         argc;
     char        **paths;
     char        *last_file_out;
+    char        *file_in;
+    char        *file_out;
 } t_data;
 
 void show_error(t_data *data, char *str, int error);
