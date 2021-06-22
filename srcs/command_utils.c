@@ -33,8 +33,6 @@ void add_path(t_data *data)
 		str = ft_strjoin(tmp, data->cmd.argv[0]);
 		free(tmp);
 		fd = open(str, O_RDONLY);
-		if (fd < 0)
-			printf("No funciona la ruta %s\n", str);
 		i++;
 	}
 	if (fd >= 0)
@@ -42,7 +40,7 @@ void add_path(t_data *data)
 	else
 	{
 		free(str);
-		show_error(data, "Command not found", -1);
+		show_error_command(data, data->cmd.argv[0]);
 	}
 	close(fd);
 }
@@ -56,7 +54,6 @@ int load_path(t_data *data, char **env)
     while (env[i] != 0)
     {
         str = ft_strnstr(env[i], "PATH=", 5);
-        printf("Lo que devuelve strnstr: %s\n", str);
         if (str)
         {
             data->paths = ft_split(&str[5], ':');

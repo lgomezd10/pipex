@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   load_command.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lgomez-d <lgomez-d@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/22 17:45:27 by lgomez-d          #+#    #+#             */
+/*   Updated: 2021/06/22 17:48:11 by lgomez-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/pipex.h"
 
 void load_temp_files(t_data *data)
@@ -22,7 +34,6 @@ void check_files(t_data *data)
 	fd = open(data->cmd.file_in, O_RDONLY);
 	if (fd < 0)
 		show_error(data, data->cmd.file_in, -1);
-	printf("el FD es %d\n", fd);
 	close(fd);
 	fd = open(data->cmd.file_out, O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
 	if (fd < 0)
@@ -32,7 +43,6 @@ void check_files(t_data *data)
 
 int load_command(t_data *data, char *str1, char *str2)
 {
-	printf("Se va a cargar el comando %s y %s\n", str1, str2);
 	if (data->cmd.is_firts)
 	{
 		data->cmd.file_in = str1;
@@ -45,7 +55,6 @@ int load_command(t_data *data, char *str1, char *str2)
 		load_temp_files(data);
 		if (str2)
 			data->cmd.file_out = str2;
-		printf("COMANDO %s\n", data->cmd.cmd);
 	}
 	check_files(data);
 	add_path(data);
@@ -66,7 +75,6 @@ int exec_command(t_data *data)
 	int pid;
 	int status;
 
-	printf("SE VA A EJECUTAR %s con entrada: %s y salida %s\n", data->cmd.cmd, data->cmd.file_in, data->cmd.file_out);
 	pid = fork();
 	if (pid == -1)
 		show_error(data, "error in fork", -1);
@@ -79,11 +87,12 @@ int exec_command(t_data *data)
 	{
 		while(wait(&status) != pid);
 		if (status == 0)
-			printf("todo bien");
+		{
+			close(data->cmd.fd_in);
+			close(data->cmd.fd_out);
+		}
 		else
-			printf("error en el hijo");
-		close(data->cmd.fd_in);
-		close(data->cmd.fd_out);
+			exit(-1);
 	}
 	return (0);
 }
