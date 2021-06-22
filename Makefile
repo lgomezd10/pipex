@@ -9,7 +9,7 @@ LIBFT = ${DIRLIBFT}/libft.a
 CFLAGS = -Wall -Wextra -Werror
 
 FILES = main \
-	handle_error \
+	clean_and_out \
 	load_command \
 	handle_path
 
@@ -18,7 +18,7 @@ SRCS = ${addsuffix .c, ${addprefix srcs/, ${FILES}}}
 OBJS = ${SRCS:.c=.o}
 
 ${NAME} : ${LIBFT} ${OBJS}
-	gcc ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT}
+	gcc -g ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT}
 
 all : ${NAME}
 

@@ -14,8 +14,8 @@ typedef struct s_command
     char *file_in;
     char *file_out;
     char *cmd;
+    char *pre_cmd;
     char **argv;
-    char    *evd;
     int     is_firts;
     int     fd_in;
     int     fd_out;
@@ -29,7 +29,9 @@ typedef struct s_data
     char        *last_file_out;
 } t_data;
 
-void show_error(char *str, int error);
+void show_error(t_data *data, char *str, int error);
+void clean_command(t_data *data);
+void clean_all(t_data *data);
 int load_command(t_data *data, char *str1, char *str2);
 int exec_command(t_data *data);
 void add_path(t_data *data);
