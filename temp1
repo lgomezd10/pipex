@@ -1,0 +1,7 @@
+-rw-rw-r-- 1 aque aque   516 Jun 22 09:51 Makefile
+drwxrwxr-x 2 aque aque  4096 Jun 22 07:51 includes
+drwxrwxr-x 3 aque aque  4096 Jun 22 09:51 libft
+-rw-rw-r-- 1 aque aque     3 Jun 22 09:51 outfile
+-rwxrwxr-x 1 aque aque 22632 Jun 22 09:51 pipex
+drwxrwxr-x 2 aque aque  4096 Jun 22 09:51 srcs
+-rw-r--r-- 1 aque aque   495 Jun 22 09:51 temp2

@@ -10,7 +10,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 FILES = main \
 	handle_error \
-	load_command
+	load_command \
+	handle_path
 
 SRCS = ${addsuffix .c, ${addprefix srcs/, ${FILES}}}
 
