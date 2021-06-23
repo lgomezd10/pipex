@@ -6,7 +6,7 @@
 /*   By: lgomez-d <lgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:45:27 by lgomez-d          #+#    #+#             */
-/*   Updated: 2021/06/22 17:48:11 by lgomez-d         ###   ########.fr       */
+/*   Updated: 2021/06/23 19:05:02 by lgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,66 +63,72 @@ int load_command(t_data *data, t_command *cmd, char *str1, char *str2)
 	return (0);
 }*/
 
-int run_command(t_data *data)
+int run_commands(t_data *data)
 {
 	int pid;
 	int status;
 	int fd1[2];
 	int fd2[2];
-	int fd3[2];
 	int fd;
 
 
 	pipe(fd1);
-	pipe(fd2);
 	pid = fork();
 	if (pid == -1)
 		show_error(data, "error in fork", -1);
 	else if (pid == 0)
 	{
-		close(fd1[WRITE_END]);
-		close(fd2[READ_END]);
-		dup2(fd1[READ_END], STDIN_FILENO);
+		printf("el fichero de entrada %s\n", data->file_in);
 		close(fd1[READ_END]);
-		dup2(fd2[WRITE_END], STDOUT_FILENO);
-		close(fd2[WRITE_END]);
+		dup2(fd1[WRITE_END], STDOUT_FILENO);
+		close(fd1[WRITE_END]);
+		fd = open(data->file_in, O_RDONLY);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		execve(data->cmds[0].cmd, data->cmds[0].argv, 0);
 	}
 	else
 	{
-		close(fd1[READ_END]);
-		close(fd2[WRITE_END]);
-		fd = open(data->file_in, O_RDONLY);
-		if (pid == -1)
-			show_error(data, "error in fork", -1);
-		else if (fd < 0)
-			show_error(data, data->file_in, -1);
-		dup2(fd, fd1[WRITE_END]);
-		close(fd);
-		pipe(fd3);
+		close(fd1[WRITE_END]);
+		pipe(fd2);
 		pid = fork();
 		if (pid == -1)
 			show_error(data, "error in fork", -1);
 		else if (pid == 0)
 		{
-			close(fd3[READ_END]);
-			dup2(fd2[READ_END], STDIN_FILENO);
 			close(fd2[READ_END]);
-			dup2(fd3[WRITE_END], STDOUT_FILENO);
-			close(fd3[WRITE_END]);
-			//EJECUTAR COMANDO
+			dup2(fd1[READ_END], STDIN_FILENO);
+			close(fd1[READ_END]);
+			dup2(fd2[WRITE_END], STDOUT_FILENO);
+			close(fd2[WRITE_END]);
+			execve(data->cmds[1].cmd, data->cmds[1].argv, 0);
 		}
 		else
 		{
-			close(fd3[WRITE_END]);
-			fd = open(data->file_out, O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
-			dup2(fd3[READ_END], fd);
+			close(fd1[READ_END]);
+			close(fd2[WRITE_END]);
+			pid = fork();
+			if (pid == -1)
+			show_error(data, "error in fork", -1);
+			else if (pid == 0)
+			{
+				dup2(fd2[READ_END], STDIN_FILENO);
+				close(fd2[READ_END]);
+				fd = open(data->file_out, O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
+				dup2(fd, STDOUT_FILENO);
+				close(fd);
+				execve(data->cmds[2].cmd, data->cmds[2].argv, 0);
+			}
 		}
 	}
-
+	close(fd2[READ_END]);
+	waitpid(pid, &status, 0);
+	/*
 	wait(&status);
-	wait(&status);
-	wait(&status);
-	close(fd);
+    wait(&status);
+    wait(&status);
+	*/
+	printf("han terminado\n");
 	return (0);
 }
 

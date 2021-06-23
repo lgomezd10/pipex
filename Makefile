@@ -11,7 +11,8 @@ CFLAGS = -Wall -Wextra -Werror
 FILES = main \
 	clean_and_out \
 	load_command \
-	command_utils
+	command_utils \
+	run_command
 
 SRCS = ${addsuffix .c, ${addprefix srcs/, ${FILES}}}
 
