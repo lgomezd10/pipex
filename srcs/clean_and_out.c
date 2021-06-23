@@ -46,15 +46,32 @@ void free_split(char **split)
 	}
 }
 
-void clean_command(t_data *data)
+
+void clean_command(t_command *cmd)
 {
-	free_split(data->cmd.argv);
-	free(data->cmd.cmd);
-	ft_bzero(&data->cmd, sizeof(t_command));
+	if (cmd)
+	{
+		free_split(cmd->argv);
+		free(cmd->cmd);
+		ft_bzero(cmd, sizeof(t_command));
+	}
+}
+
+void clear_cmds(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (i < data->size_cmds)
+	{
+		clean_command(&data->cmds[i]);
+		i++;
+	}
+	
 }
 
 void clean_all(t_data *data)
 {
-	clean_command(data);
+	clear_cmds(data);
 	free_split(data->paths);
 }

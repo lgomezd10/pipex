@@ -18,14 +18,15 @@ int main(int argc, char **argv, char **env)
 	ft_bzero(&data, sizeof(t_data));
 	if (argc < 5)
 		show_error(&data, "At least three arguments are required", 0);
+	data.cmds = ft_calloc(sizeof(t_command), argc - 2);
 	load_path(&data, env);
-	i = 1;
+	i = 0;
 	data.file_in = argv[i++];
 	data.file_out = argv[argc - 1];
-	while (i < argc - 1)
+	data.size_cmds = argc - 3;
+	while (i < data.size_cmds)
 	{
-		cmd = add_new_command(&data);
-		cmd->pre_cmd = argv[i];
+		data.cmds[i].pre_cmd = argv[i + 2];
 		i++;
 	}
 	clean_all(&data);

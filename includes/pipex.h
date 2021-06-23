@@ -10,6 +10,8 @@
 # define TMP_FILE_1 "temp1"
 # define TMP_FILE_2 "temp2"
 # define NAME "pipex: "
+# define READ_END 0
+# define WRITE_END 1
 
 typedef struct s_command
 {
@@ -25,7 +27,8 @@ typedef struct s_command
 
 typedef struct s_data
 {
-    t_list      *cmds;
+    t_command   *cmds;
+    int         size_cmds;
     int         argc;
     char        **paths;
     char        *last_file_out;
@@ -35,7 +38,6 @@ typedef struct s_data
 
 void show_error(t_data *data, char *str, int error);
 void show_error_command(t_data *data, char *resource);
-void clean_command(t_data *data);
 void clean_all(t_data *data);
 int load_command(t_data *data, char *str1, char *str2);
 int exec_command(t_data *data);
