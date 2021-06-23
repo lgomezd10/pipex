@@ -6,7 +6,7 @@
 /*   By: lgomez-d <lgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 19:51:39 by lgomez-d          #+#    #+#             */
-/*   Updated: 2021/06/23 20:53:04 by lgomez-d         ###   ########.fr       */
+/*   Updated: 2021/06/23 20:51:16 by lgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	main(int argc, char **argv, char **env)
 	int		i;
 
 	ft_bzero(&data, sizeof(t_data));
-	if (argc != 5)
-		show_error(&data, "Needed four arguments");
+	if (argc < 5)
+		show_error(&data, "At least three arguments are required");
 	data.cmds = ft_calloc(sizeof(t_command), argc - 2);
 	load_path(&data, env);
 	data.size_cmds = argc - 3;
