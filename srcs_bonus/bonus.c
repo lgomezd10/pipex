@@ -6,7 +6,7 @@
 /*   By: lgomez-d <lgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 15:07:25 by lgomez-d          #+#    #+#             */
-/*   Updated: 2021/06/24 15:30:38 by lgomez-d         ###   ########.fr       */
+/*   Updated: 2021/06/24 20:38:00 by lgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void	run_limitator(t_data *data)
 		close(data->cmds[0].fd[WRITE_END]);
 		run_commands(data);
 		wait(&status);
-		printf("todo terminado");
 	}
 }
 
