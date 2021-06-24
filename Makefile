@@ -15,10 +15,19 @@ FILES = main \
 
 SRCS = ${addsuffix .c, ${addprefix srcs/, ${FILES}}}
 
+FILESBONUS = ${FILES} bonus utils_run
+
+SRCSBONUS = ${addsuffix .c, ${addprefix srcs_bonus/, ${FILESBONUS}}}
+
 OBJS = ${SRCS:.c=.o}
+
+OBJSBONUS = ${SRCSBONUS:.c=.o}
 
 ${NAME} : ${LIBFT} ${OBJS}
 	gcc -g ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT}
+
+bonus : ${LIBFT} ${OBJSBONUS}
+	gcc -g ${CFLAGS} -o ${NAME} ${OBJSBONUS} ${LIBFT}
 
 all : ${NAME}
 
@@ -27,10 +36,12 @@ ${LIBFT}:
 
 clean:
 	${RM} ${OBJS}
-	${RM} ${OBJSMAIN}
-	${RM} ${OBJSMAINBONUS}
+	${RM} ${OBJSBONUS}
 	${MAKE} fclean -C ${DIRLIBFT}
 
 fclean:	clean
 	${RM} ${NAME}
-	${RM} ${NAME_BONUS}
+
+re:		fclean all
+
+.PHONY:	all bonus clean fclean re

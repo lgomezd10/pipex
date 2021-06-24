@@ -76,11 +76,14 @@ void	check_files(t_data *data)
 {
 	int	fd;
 
-	fd = open(data->file_in, O_RDONLY);
-	if (fd < 0)
-		show_error(data, data->file_in);
-	close(fd);
-	fd = open(data->file_out, O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
+	if (!data->limiter)
+	{
+		fd = open(data->file_in, O_RDONLY);
+		if (fd < 0)
+			show_error(data, data->file_in);
+		close(fd);
+	}
+	fd = open(data->file_out, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd < 0)
 		show_error(data, data->file_out);
 	close(fd);

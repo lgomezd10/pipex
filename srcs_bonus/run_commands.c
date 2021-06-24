@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/bonus.h"
 
 static void	run_firts_child(t_data *data, int pos)
 {
@@ -36,7 +36,10 @@ static void	run_last_child(t_data *data, int pos)
 	cmd = data->cmds[pos];
 	dup2(data->cmds[pos - 1].fd[READ_END], STDIN_FILENO);
 	close(data->cmds[pos - 1].fd[READ_END]);
-	fd = open(data->file_out, O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
+	if (!data->limiter)
+		fd = open(data->file_out, O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
+	else
+		fd = open(data->file_out, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	execve(cmd.cmd, cmd.argv, 0);
@@ -57,15 +60,14 @@ static void	run_midle_child(t_data *data, int pos)
 	show_error(data, "Error in exec");
 }
 
-static void	close_fds(t_data *data, int pos)
+static void run_child(t_data *data, int pos)
 {
 	if (pos == 0)
-		close(data->cmds[pos].fd[WRITE_END]);
-	if (pos > 0 && pos < data->size_cmds - 1)
-	{
-		close(data->cmds[pos - 1].fd[READ_END]);
-		close(data->cmds[pos].fd[WRITE_END]);
-	}
+		run_firts_child(data, pos);
+	else if (pos == data->size_cmds - 1)
+		run_last_child(data, pos);
+	else
+		run_midle_child(data, pos);
 }
 
 void	run_commands(t_data *data)
@@ -75,6 +77,8 @@ void	run_commands(t_data *data)
 	int		status;
 
 	i = 0;
+	if (data->limiter)
+		i++;
 	while (i < data->size_cmds)
 	{
 		pid = fork();
@@ -82,12 +86,7 @@ void	run_commands(t_data *data)
 			show_error(data, "Error in fork");
 		if (pid == 0)
 		{
-			if (i == 0)
-				run_firts_child(data, i);
-			else if (i == data->size_cmds - 1)
-				run_last_child(data, i);
-			else
-				run_midle_child(data, i);
+			run_child(data, i);
 		}
 		else
 			close_fds(data, i);

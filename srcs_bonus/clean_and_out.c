@@ -60,6 +60,7 @@ void	clean_all(t_data *data)
 			ft_bzero(&data->cmds[i], sizeof(t_command));
 			i++;
 		}
+		free(data->cmds);
 	}
 	free_split(data->paths);
 	ft_bzero(data, sizeof(t_data));

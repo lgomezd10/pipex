@@ -45,6 +45,7 @@ typedef struct s_data
 	char		*last_file_out;
 	char		*file_in;
 	char		*file_out;
+	char		*limiter;
 }	t_data;
 
 void	show_error(t_data *data, char *str);

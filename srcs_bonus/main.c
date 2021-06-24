@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/bonus.h"
+
+
 
 int	main(int argc, char **argv, char **env)
 {
@@ -19,19 +21,22 @@ int	main(int argc, char **argv, char **env)
 
 	ft_bzero(&data, sizeof(t_data));
 	if (argc < 5)
-		show_error(&data, "At least three arguments are required");
+		show_error(&data, "At least four arguments are required");
 	data.cmds = ft_calloc(sizeof(t_command), argc - 2);
 	load_path(&data, env);
-	data.size_cmds = argc - 3;
-	data.file_in = argv[1];
-	data.file_out = argv[argc - 1];
-	check_files(&data);
-	i = 0;
-	while (i < data.size_cmds)
+	if (!has_limiter(&data, argc, argv))
 	{
-		save_command(&data, &data.cmds[i], argv[i + 2]);
-		i++;
+		data.size_cmds = argc - 3;
+		data.file_in = argv[1];
+		data.file_out = argv[argc - 1];
+		check_files(&data);
+		i = 0;
+		while (i < data.size_cmds)
+		{
+			save_command(&data, &data.cmds[i], argv[i + 2]);
+			i++;
+		}
+		run_commands(&data);
 	}
-	run_commands(&data);
 	clean_all(&data);
 }
