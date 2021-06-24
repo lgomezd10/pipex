@@ -6,7 +6,7 @@
 /*   By: lgomez-d <lgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:45:19 by lgomez-d          #+#    #+#             */
-/*   Updated: 2021/06/23 20:45:23 by lgomez-d         ###   ########.fr       */
+/*   Updated: 2021/06/24 15:36:12 by lgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,4 @@ void	clean_all(t_data *data)
 	}	
 	free_split(data->paths);
 	ft_bzero(data, sizeof(t_data));
-	//system("leaks pipex");
 }

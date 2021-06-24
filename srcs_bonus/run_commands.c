@@ -6,7 +6,7 @@
 /*   By: lgomez-d <lgomez-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/23 20:01:20 by lgomez-d          #+#    #+#             */
-/*   Updated: 2021/06/23 20:40:18 by lgomez-d         ###   ########.fr       */
+/*   Updated: 2021/06/24 15:33:27 by lgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static void	run_last_child(t_data *data, int pos)
 	dup2(data->cmds[pos - 1].fd[READ_END], STDIN_FILENO);
 	close(data->cmds[pos - 1].fd[READ_END]);
 	if (!data->limiter)
-		fd = open(data->file_out, O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
+		fd = open(data->file_out, O_CREAT | O_WRONLY | \
+		O_TRUNC | O_APPEND, 0644);
 	else
 		fd = open(data->file_out, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	dup2(fd, STDOUT_FILENO);
@@ -60,7 +61,7 @@ static void	run_midle_child(t_data *data, int pos)
 	show_error(data, "Error in exec");
 }
 
-static void run_child(t_data *data, int pos)
+static void	run_child(t_data *data, int pos)
 {
 	if (pos == 0)
 		run_firts_child(data, pos);
